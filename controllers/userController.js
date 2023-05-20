@@ -1,4 +1,4 @@
-const { User, Application } = require("../models");
+const { User, Thought } = require("../models");
 
 module.exports = {
   // Get all users
@@ -37,19 +37,17 @@ module.exports = {
   },
   async updateUser(req, res) {
     try {
-      const application = await User.findOneAndUpdate(
-        { _id: req.params.applicationId },
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
         { $set: req.body },
         { runValidators: true, new: true }
       );
 
-      if (!application) {
-        return res
-          .status(404)
-          .json({ message: "No application with this id!" });
+      if (!user) {
+        return res.status(404).json({ message: "No user with this id!" });
       }
 
-      res.json(application);
+      res.json(user);
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
@@ -64,8 +62,8 @@ module.exports = {
         return res.status(404).json({ message: "No user with that ID" });
       }
 
-      await Application.deleteMany({ _id: { $in: user.applications } });
-      res.json({ message: "User and associated apps deleted!" });
+      await Thought.deleteMany({ _id: { $in: user.thoughts } });
+      res.json({ message: "User and associated thoughts deleted!" });
     } catch (err) {
       res.status(500).json(err);
     }
