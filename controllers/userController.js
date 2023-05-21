@@ -15,7 +15,6 @@ module.exports = {
     try {
       const user = await User.findOne({ _id: req.params.userId })
         .select("-__v")
-        // .populate("thoughts");
         .populate("thoughts")
         .populate("friends");
 
@@ -72,11 +71,17 @@ module.exports = {
     }
   },
   // add a friend to user
-  async addFriend(req, res) {
+  async createFriend(req, res) {
     try {
+      const friend = await User.findOne({ _id: req.params.friendId });
+
+      if (!friend) {
+        res.status(404).json({ message: "No user(friend) with that ID!" });
+      }
+
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { friends: req.body } },
+        { $addToSet: { friends: friend } },
         { runValidators: true, new: true }
       );
 
@@ -90,7 +95,7 @@ module.exports = {
     }
   },
   // remove friend
-  async removeFriend(req, res) {
+  async deleteFriend(req, res) {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
