@@ -1,4 +1,4 @@
-export const users = [
+const users = [
   { username: "佐藤", email: "sato@example.com" },
   { username: "鈴木", email: "suzuki@example.com" },
   { username: "高橋", email: "takahashi@example.com" },
@@ -11,7 +11,7 @@ export const users = [
   { username: "吉田", email: "yoshida@example.com" },
 ];
 
-export const thoughtText = [
+const thoughtText = [
   "日本の茶道の優雅さと精密さに魅了されています。それらは日本文化の美しい反映です。",
   "陶芸や木工などの日本の伝統工芸品の細部への注意は本当に素晴らしいです。それぞれの作品が物語を語っています。",
   "日本の料理は味と食感の豊かな交響曲です。寿司からラーメンまで、いつも私の味覚を満足させてくれます。",
@@ -54,7 +54,7 @@ export const thoughtText = [
   "The craftsmanship of Japanese knives, renowned for their sharpness and quality, is a testament to the country's rich culinary tradition.",
 ];
 
-export const reactions = [
+const reactions = [
   [
     "I completely agree! Japanese tea ceremonies are a true art form.",
     "私も完全に同意です！日本の茶道は本当に芸術です。",
@@ -260,3 +260,5 @@ export const reactions = [
     "日本の文化の影響に感謝しています。それは私を無数の方法で豊かにしてくれました。",
   ],
 ];
+
+module.exports = { users, thoughtText, reactions };
