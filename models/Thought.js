@@ -54,6 +54,6 @@ function formatDate(createdAt) {
   return dayjs(createdAt).formatDate("MMMM D, YYYY");
 }
 
-const Thought = model("thought", userSchema);
+const Thought = model("thought", thoughtSchema);
 
 module.exports = Thought;
