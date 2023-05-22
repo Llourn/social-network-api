@@ -1,4 +1,5 @@
-const { User, Thought } = require("../models");
+const { User, Thought, Reaction } = require("../models");
+const missingIdMessage = require("../utils/errormsg");
 
 module.exports = {
   async getThoughts(req, res) {
@@ -14,7 +15,9 @@ module.exports = {
       const thought = await Thought.findOne({ _id: req.params.thoughtId });
 
       if (!thought) {
-        return res.status(404).json({ message: "No thought with that ID" });
+        return res
+          .status(404)
+          .json({ message: missingIdMessage("thought", req.params.thoughtId) });
       }
       return res.json(thought);
     } catch (err) {
@@ -30,11 +33,10 @@ module.exports = {
         { new: true }
       );
 
-      if (!thought) {
-        return res.status(404).json({ message: "No thought with this id!" });
-      }
-
-      res.json(thought);
+      res.json({
+        message: "Thought created successfully.",
+        thoughts: user.thoughts,
+      });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -48,10 +50,12 @@ module.exports = {
       );
 
       if (!thought) {
-        return res.status(404).json({ message: "No thought with this id!" });
+        return res
+          .status(404)
+          .json({ message: missingIdMessage("thought", req.params.thoughtId) });
       }
 
-      res.json(thought);
+      res.json({ message: "Thought updated successfully.", thought: thought });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -63,7 +67,9 @@ module.exports = {
       });
 
       if (!thought) {
-        return res.status(404).json({ message: "No thought with this id!" });
+        return res
+          .status(404)
+          .json({ message: missingIdMessage("thought", req.params.thoughtId) });
       }
 
       const user = await User.findOneAndUpdate(
@@ -73,9 +79,9 @@ module.exports = {
       );
 
       if (!user) {
-        return res
-          .status(404)
-          .json({ message: "No user with this thought id!" });
+        return res.status(404).json({
+          message: "No user with this thought id " + req.params.thoughtId,
+        });
       }
 
       res.json({ message: "Thought deleted successfully!" });
@@ -85,17 +91,26 @@ module.exports = {
   },
   async createReaction(req, res) {
     try {
-      const thought = await Thought.findOneAndUpdate(
-        { _id: req.params.thoughtId },
-        { $addToSet: { reactions: req.body } },
-        { runValidators: true }
-      );
+      const thought = await Thought.findById(req.params.thoughtId);
 
       if (!thought) {
-        return res.status(404).json({ message: "No thought with this id!" });
+        return res
+          .status(404)
+          .json({ message: missingIdMessage("thought", req.params.thoughtId) });
       }
 
-      res.json({ message: "Reaction created successfully!" });
+      // create a new reaction here, so I can return the ID of the reaction in the json response.
+      const reaction = new Reaction(req.body);
+
+      thought.reactions.push(reaction);
+
+      await thought.save();
+
+      res.json({
+        message: "Reaction created successfully!",
+        newReactionId: reaction._id,
+        reactions: thought.reactions,
+      });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -109,9 +124,14 @@ module.exports = {
       );
 
       if (!thought) {
-        return res.status(404).json({ message: "No thought with this id!" });
+        return res
+          .status(404)
+          .json({ message: missingIdMessage("thought", req.params.thoughtId) });
       }
-      res.json({ message: "Reaction deleted successfully!" });
+      res.json({
+        message: "Reaction deleted successfully!",
+        reactions: thought.reactions,
+      });
     } catch (err) {
       res.status(500).json(err);
     }
