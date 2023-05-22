@@ -23,11 +23,11 @@ Instructions:
 - cd into project directory
 - npm install
 - update the connection information in the `config/connection.js` file.
-- `npm run start`
+- `npm run start` to start the server.
 
 Seed Data:
 
-- `npm run seed`
+- `npm run seed` to seed the database with test data.
 
 ## Usage
 
