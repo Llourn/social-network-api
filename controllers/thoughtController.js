@@ -63,7 +63,7 @@ module.exports = {
       });
 
       if (!thought) {
-        res.status(404).json({ message: "No thought with this id!" });
+        return res.status(404).json({ message: "No thought with this id!" });
       }
 
       const user = await User.findOneAndUpdate(
@@ -73,7 +73,9 @@ module.exports = {
       );
 
       if (!user) {
-        res.status(404).json({ message: "No user with this thought id!" });
+        return res
+          .status(404)
+          .json({ message: "No user with this thought id!" });
       }
 
       res.json({ message: "Thought deleted successfully!" });
@@ -107,7 +109,7 @@ module.exports = {
       );
 
       if (!thought) {
-        res.status(404).json({ message: "No thought with this id!" });
+        return res.status(404).json({ message: "No thought with this id!" });
       }
       res.json({ message: "Reaction deleted successfully!" });
     } catch (err) {
