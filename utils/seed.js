@@ -22,10 +22,9 @@ connection.once("open", async () => {
   usersData.forEach((user) => {
     const newFriends = chooseRandomArrItems(usersData, 2);
 
-    let newReactions = [];
-
     // Add 4 thoughts to each user. This only works because there are 4x as many thoughts as users.
     for (let i = 0; i < 4; i++) {
+      let newReactions = [];
       // Add as many reactions as there are in the same index position in the reactions array.
       for (let j = 0; j < reactions[thoughtIndex].length; j++) {
         const newReaction = {
