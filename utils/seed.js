@@ -5,13 +5,14 @@ const { users, thoughtText, reactions } = require("./data");
 connection.on("error", (err) => err);
 
 connection.once("open", async () => {
-  console.log("⚡️ Connected");
+  console.log("🔌 Connected.");
   // Clear out the database.
   await Thought.deleteMany({});
   await User.deleteMany({});
 
   // Add all users.
   const usersData = await User.insertMany(users);
+  console.log("✅ Users added.");
 
   let updateFriendsOps = [];
   let updateThoughtsOps = [];
@@ -75,23 +76,23 @@ connection.once("open", async () => {
   // Execute all queries.
   await Promise.all(updateFriendsOps)
     .then(() => {
-      console.log("Friends added to each user succesfully.");
+      console.log("✅ Friends added.");
     })
     .catch((err) => console.log(err));
 
   await Promise.all(updateThoughtsOps)
     .then(() => {
-      console.log("Thoughts added succesfully.");
+      console.log("✅ Thoughts added.");
     })
     .catch((err) => console.log(err));
 
   await Promise.all(addThoughtsToSets)
     .then(() => {
-      console.log("Thoughts added to sets succesfully.");
+      console.log("✅ Thoughts added to user sets.");
     })
     .catch((err) => console.log(err));
 
-  console.info("Seeding complete! 🌱");
+  console.info("\nSeeding complete! 🌱");
 
   process.exit(0);
 });
