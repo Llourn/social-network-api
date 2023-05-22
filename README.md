@@ -4,6 +4,10 @@
 
 An API designed for use in a social networking app. Built with NodeJS, ExpressJS, and mongodb.
 
+
+https://github.com/Llourn/social-network-api/assets/4216705/f0bc3663-0c84-45dc-9dde-efad90d4d16f
+
+
 ## Table of Contents
 
 - [Installation](#installation)
