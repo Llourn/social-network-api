@@ -72,7 +72,11 @@ module.exports = {
         { new: true }
       );
 
-      res.json({ message: "Thought successfully deleted!" });
+      if (!user) {
+        res.status(404).json({ message: "No user with this thought id!" });
+      }
+
+      res.json({ message: "Thought deleted successfully!" });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -89,7 +93,7 @@ module.exports = {
         return res.status(404).json({ message: "No thought with this id!" });
       }
 
-      res.json("Created the reaction! 🎉");
+      res.json({ message: "Reaction created successfully!" });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -105,7 +109,7 @@ module.exports = {
       if (!thought) {
         res.status(404).json({ message: "No thought with this id!" });
       }
-      res.json("Deleted the reaction! 💥");
+      res.json({ message: "Reaction deleted successfully!" });
     } catch (err) {
       res.status(500).json(err);
     }
