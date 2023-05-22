@@ -1,4 +1,5 @@
 const { User, Thought } = require("../models");
+const missingIdMessage = require("../utils/errormsg");
 
 module.exports = {
   // Get all users
@@ -83,11 +84,9 @@ module.exports = {
       const friend = await User.findOne({ _id: req.params.friendId });
 
       if (!friend) {
-        return res
-          .status(404)
-          .json({
-            message: missingIdMessage("user(friend)", req.params.friendId),
-          });
+        return res.status(404).json({
+          message: missingIdMessage("user(friend)", req.params.friendId),
+        });
       }
 
       const user = await User.findOneAndUpdate(

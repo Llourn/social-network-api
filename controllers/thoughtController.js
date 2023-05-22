@@ -33,8 +33,15 @@ module.exports = {
         { new: true }
       );
 
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: missingIdMessage("user", req.body.userId) });
+      }
+
       res.json({
         message: "Thought created successfully.",
+        newThoughtId: thought._id,
         thoughts: user.thoughts,
       });
     } catch (err) {
